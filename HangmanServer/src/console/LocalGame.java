@@ -7,6 +7,13 @@
  */
 package console;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import hangman.ArtificialPlayer;
 import hangman.Hangman;
 import hangman.Player;
@@ -22,11 +29,23 @@ public class LocalGame {
      * Play the game with the terminal.
      * 
      * @param args ignored
+     * @throws IOException 
+     * @throws UnknownHostException 
      */
-    public static void main(String[] args) {
-        Hangman game = new Hangman();
+    public static void main(String[] args) throws UnknownHostException, IOException {
+        /*Hangman game = new Hangman();
         Player player = new LocalPlayer();
         // Player player = new ArtificialPlayer();
-        game.playGame(player);
+        game.playGame(player);*/
+    	Socket clientSocket = new Socket("0.0.0.0", 8888);
+    	PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+        BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        for(int i=0; i<10; i++) {
+        	out.println("Ciao");
+        }
+        out.println("END");
+        in.close();
+        out.close();
+        clientSocket.close();
     }
 }
